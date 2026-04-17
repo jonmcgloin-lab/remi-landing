@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remi — Gifting, handled.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --warm-white: #FDF9F5;
+            --terracotta: #C4714A;
+            --deep-brown: #1C1410;
+            --gold: #B8965A;
+            --sand: #E8DDD0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--deep-brown);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--deep-brown);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--deep-brown);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracotta);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--terracotta)20, transparent 60%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            color: var(--deep-brown);
+        }
+
+        .hero-title .accent {
+            color: var(--terracotta);
+            font-style: italic;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            color: var(--deep-brown);
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .cta-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .email-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--sand);
+            border-radius: 60px;
+            font-size: 1rem;
+            background: var(--warm-white);
+            color: var(--deep-brown);
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--terracotta);
+            background: white;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: var(--terracotta);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cta-button:hover {
+            background: var(--deep-brown);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: var(--warm-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 500;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--deep-brown);
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: var(--sand);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--terracotta);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+        }
+
+        .feature-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--deep-brown);
+            opacity: 0.8;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+            background: var(--cream);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            position: relative;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: var(--terracotta);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 1.2rem;
+            line-height: 50px;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            font-size: 1rem;
+            color: var(--deep-brown);
+            opacity: 0.8;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            padding: 4rem 0;
+            background: var(--sand);
+            text-align: center;
+        }
+
+        .proof-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--terracotta);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--deep-brown);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            padding: 6rem 0;
+            background: var(--deep-brown);
+            color: var(--cream);
+            text-align: center;
+        }
+
+        .footer-cta .section-title {
+            color: var(--cream);
+        }
+
+        .footer-cta .section-subtitle {
+            color: var(--cream);
+            opacity: 0.8;
+        }
+
+        .footer-cta .cta-button {
+            background: var(--terracotta);
+            margin-top: 2rem;
+        }
+
+        .footer-cta .cta-button:hover {
+            background: var(--gold);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 0;
+            background: var(--deep-brown);
+            color: var(--cream);
+            text-align: center;
+            opacity: 0.6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title,
+        .hero-description,
+        .cta-form {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .hero-description {
+            animation-delay: 0.2s;
+        }
+
+        .cta-form {
+            animation-delay: 0.4s;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 2rem 0 4rem;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            .email-input {
+                min-width: 100%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .proof-stats {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">Remi</a>
+                <ul class="nav-links">
+                    <li><a href="#how">How it works</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <p class="hero-subtitle">Personal gifting platform</p>
+            <h1 class="hero-title">
+                The people you love,<br>
+                <span class="accent">remembered.</span>
+            </h1>
+            <p class="hero-description">
+                Remi knows who you love, when it matters, and handles everything else. 
+                Perfect gifts, delivered perfectly, without the endless browsing.
+            </p>
+            
+            <form class="cta-form">
+                <input 
+                    type="email" 
+                    class="email-input" 
+                    placeholder="Enter your email for early access"
+                    required
+                >
+                <button type="submit" class="cta-button">Join Waitlist</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Gifting, solved</h2>
+                <p class="section-subtitle">
+                    No more guessing addresses, browsing endless catalogs, or missing important moments.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">AI-Matched Gifts</h3>
+                    <p class="feature-description">
+                        Tell us about them, we'll find the perfect gift. 
+                        Swipe through curated options, never browse catalogs again.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3 class="feature-title">Address Problem Solved</h3>
+                    <p class="feature-description">
+                        Don't know their address? No problem. 
+                        We handle delivery details without spoiling the surprise.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Perfect Timing</h3>
+                    <p class="feature-description">
+                        Same-day delivery in Dubai, 2-3 days internationally. 
+                        We only show gifts we can deliver on time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How Remi works</h2>
+                <p class="section-subtitle">
+                    Three taps, and you're done. We handle the rest.
+                </p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Tell us about them</h3>
+                    <p class="step-description">
+                        Quick bubbles: relationship, age, interests, occasion, budget.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Swipe & select</h3>
+                    <p class="step-description">
+                        AI returns 5-8 perfect matches. Swipe, tap, done.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">We handle everything</h3>
+                    <p class="step-description">
+                        Address capture, ordering, tracking, delivery—all invisible to you.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <h2 class="section-title">Launching in Dubai</h2>
+            <p class="section-subtitle">
+                For expats and professionals who send gifts locally and internationally
+            </p>
+            
+            <div class="proof-stats">
+                <div class="stat">
+                    <span class="stat-number">200+</span>
+                    <div class="stat-label">Countries covered</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">2hr</span>
+                    <div class="stat-label">Same-day delivery (Dubai)</div>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10k+</span>
+                    <div class="stat-label">Gift options</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta" id="contact">
+        <div class="container">
+            <h2 class="section-title">Ready to never forget again?</h2>
+            <p class="section-subtitle">
+                Join the waitlist for early access to Remi. Dubai launch coming soon.
+            </p>
+            <button class="cta-button">Get Early Access</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Remi. Dubai, UAE. Gifting, handled.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form handling
+        document.querySelector('.cta-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Replace with actual form handling
+            alert('Thanks for joining! We\'ll be in touch soon.');
+            this.querySelector('input[type="email"]').value = '';
+        });
+
+        // Second CTA button
+        document.querySelector('.footer-cta .cta-button').addEventListener('click', function() {
+            document.querySelector('.email-input').focus();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .step, .stat').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "remi-landing",
+  "version": "1.0.0",
+  "description": "Remi - Personal gifting platform landing page",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "python3 -m http.server 8080"
+  },
+  "keywords": ["gifting", "ai", "dubai", "personal", "luxury"],
+  "author": "Remi",
+  "license": "MIT"
+}
