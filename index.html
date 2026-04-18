@@ -936,6 +936,9 @@
 </head>
 <body>
 
+<!-- Hidden iframe catches Kit's form POST response so the user stays on remigft.com -->
+<iframe name="kit-sink" id="kit-sink" style="position:absolute;width:0;height:0;border:0;visibility:hidden;" aria-hidden="true" tabindex="-1"></iframe>
+
 <!-- ============ NAV ============ -->
 <nav>
   <div class="nav-inner">
@@ -975,12 +978,14 @@
 
         <form class="waitlist" id="join"
               action="https://app.kit.com/forms/9341089/subscriptions"
-              method="post">
+              method="post"
+              target="kit-sink">
           <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
           <span class="field-divider" aria-hidden="true"></span>
           <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
-          <button type="submit">Request invite</button>
+          <button type="submit" data-label-default="Request invite" data-label-sending="Sending…" data-label-success="✓  On the list">Request invite</button>
         </form>
+        <div class="waitlist-msg" aria-live="polite"></div>
 
         <div class="hero-meta">
           <div class="hero-meta-item">
@@ -1351,12 +1356,14 @@
 
       <form class="waitlist"
             action="https://app.kit.com/forms/9341089/subscriptions"
-            method="post">
+            method="post"
+            target="kit-sink">
         <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
         <span class="field-divider" aria-hidden="true"></span>
         <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
-        <button type="submit">Reserve my place</button>
+        <button type="submit" data-label-default="Reserve my place" data-label-sending="Sending…" data-label-success="✓  Welcome">Reserve my place</button>
       </form>
+      <div class="waitlist-msg" aria-live="polite"></div>
 
       <div class="cta-sig">rémi · made in dubai · delivered everywhere</div>
     </div>
@@ -1417,6 +1424,48 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+  // ---------- Waitlist: show branded success state after Kit submission ----------
+  // The form POSTs to Kit via a hidden iframe (target="kit-sink"), which keeps
+  // the user on remigft.com. We show the gold success state after submit fires.
+  // Kit handles the actual subscription on their end.
+  document.querySelectorAll('form.waitlist').forEach((form) => {
+    const button = form.querySelector('button[type="submit"]');
+    const msg = form.nextElementSibling && form.nextElementSibling.classList.contains('waitlist-msg')
+      ? form.nextElementSibling : null;
+
+    const setMsg = (text, isError = false) => {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.classList.toggle('is-error', isError);
+      msg.classList.toggle('show', !!text);
+    };
+
+    const setButton = (labelKey) => {
+      const label = button.dataset[`label${labelKey}`];
+      if (label) button.textContent = label;
+    };
+
+    form.addEventListener('submit', (e) => {
+      // Guard against double-submit
+      if (form.classList.contains('is-success')) {
+        e.preventDefault();
+        return;
+      }
+      // Let the browser complete the native POST to the iframe,
+      // then update UI optimistically after a beat.
+      button.disabled = true;
+      setButton('Sending');
+
+      // Show success state after a short delay (matches Kit round-trip time).
+      setTimeout(() => {
+        form.classList.add('is-success');
+        setButton('Success');
+        setMsg('Check your inbox to confirm — we\'ll be in touch soon.');
+        form.querySelectorAll('input').forEach((i) => { i.disabled = true; });
+      }, 900);
+    });
+  });
 </script>
 
 </body>
