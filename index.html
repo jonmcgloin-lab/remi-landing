@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script async data-uid="6a52a2bd96" src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 <style>
   :root {
     --cream: #FAF7F2;
@@ -315,66 +314,6 @@
     30%, 50%, 70% { transform: translateX(-4px); }
     40%, 60% { transform: translateX(4px); }
   }
-
-  /* ---------- Override Kit's default form styles ---------- */
-  /* Kit's ck.5.js injects its own CSS — these rules ensure Rémi's design wins */
-  .waitlist.formkit-form,
-  .waitlist.formkit-form * { box-sizing: border-box; }
-  .waitlist.formkit-form {
-    max-width: 540px !important;
-    padding: 6px !important;
-  }
-  .waitlist .formkit-input {
-    padding: 14px 20px !important;
-    border: none !important;
-    background: transparent !important;
-    font-family: inherit !important;
-    font-size: 15px !important;
-    color: var(--brown) !important;
-    line-height: 1.4 !important;
-    margin: 0 !important;
-    flex: 1 0 auto;
-    min-width: 0;
-  }
-  .waitlist .formkit-input:focus { outline: none !important; }
-  .waitlist .formkit-submit {
-    background: var(--brown) !important;
-    color: var(--cream) !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border-radius: 999px !important;
-    font-family: inherit !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    overflow: hidden;
-    height: auto;
-  }
-  .waitlist .formkit-submit > span {
-    display: block;
-    padding: 14px 28px !important;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    background: transparent !important;
-  }
-  .waitlist .formkit-submit:hover { background: var(--terracotta) !important; }
-  .waitlist .formkit-submit:hover > span { background: transparent !important; }
-  /* Hide Kit's default "Powered by Kit" badge and alert containers */
-  .waitlist .formkit-powered-by-convertkit-container,
-  .waitlist [data-element="powered-by"],
-  .waitlist .formkit-alert { display: none !important; }
-  /* Neutralize Kit's layout rules */
-  .waitlist .formkit-fields,
-  .waitlist [data-style="clean"],
-  .waitlist [data-element="fields"] {
-    display: contents;
-  }
-  .waitlist .formkit-field {
-    margin: 0 !important;
-    flex: 1 0 auto;
-    display: contents;
-  }
-  .waitlist .formkit-spinner { display: none !important; }
 
   .hero-meta {
     display: flex;
@@ -1034,19 +973,14 @@
           Rémi is the AI gifting concierge that finds the perfect present for anyone, anywhere — without ever asking for an address. Curated. Considered. Carried across 200+ countries.
         </p>
 
-        <form class="waitlist seva-form formkit-form" id="join"
+        <form class="waitlist" id="join"
               action="https://app.kit.com/forms/9341089/subscriptions"
-              method="post"
-              data-sv-form="9341089"
-              data-uid="6a52a2bd96"
-              data-format="inline"
-              data-version="5">
-          <input type="text" name="fields[first_name]" class="field-name formkit-input" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
+              method="post">
+          <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
           <span class="field-divider" aria-hidden="true"></span>
-          <input type="email" name="email_address" class="formkit-input" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
-          <button type="submit" class="formkit-submit" data-element="submit" data-label-default="Request invite" data-label-sending="Sending…" data-label-success="✓  On the list"><span>Request invite</span></button>
+          <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
+          <button type="submit">Request invite</button>
         </form>
-        <div class="waitlist-msg" aria-live="polite"></div>
 
         <div class="hero-meta">
           <div class="hero-meta-item">
@@ -1415,19 +1349,14 @@
       <h2>Some gifts wait<br>for the <em>right hands.</em></h2>
       <p>Rémi launches soon. Join the founding waitlist for early access, a complimentary first gift, and a quiet thank-you from us.</p>
 
-      <form class="waitlist seva-form formkit-form"
+      <form class="waitlist"
             action="https://app.kit.com/forms/9341089/subscriptions"
-            method="post"
-            data-sv-form="9341089"
-            data-uid="6a52a2bd96"
-            data-format="inline"
-            data-version="5">
-        <input type="text" name="fields[first_name]" class="field-name formkit-input" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
+            method="post">
+        <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
         <span class="field-divider" aria-hidden="true"></span>
-        <input type="email" name="email_address" class="formkit-input" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
-        <button type="submit" class="formkit-submit" data-element="submit" data-label-default="Reserve my place" data-label-sending="Sending…" data-label-success="✓  Welcome"><span>Reserve my place</span></button>
+        <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
+        <button type="submit">Reserve my place</button>
       </form>
-      <div class="waitlist-msg" aria-live="polite"></div>
 
       <div class="cta-sig">rémi · made in dubai · delivered everywhere</div>
     </div>
@@ -1488,63 +1417,6 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
-
-  // ---------- Waitlist: enhance Kit's native form submission ----------
-  // Kit's ck.5.js library handles the actual POST to their endpoint.
-  // We intercept its lifecycle to display our Rémi-branded success state
-  // instead of Kit's default success message.
-
-  document.querySelectorAll('form.formkit-form').forEach((form) => {
-    const button = form.querySelector('button[type="submit"]');
-    const msg = form.nextElementSibling && form.nextElementSibling.classList.contains('waitlist-msg')
-      ? form.nextElementSibling : null;
-
-    const setMsg = (text, isError = false) => {
-      if (!msg) return;
-      msg.textContent = text;
-      msg.classList.toggle('is-error', isError);
-      msg.classList.toggle('show', !!text);
-    };
-
-    const setButton = (labelKey) => {
-      const label = button.dataset[`label${labelKey}`];
-      if (!label) return;
-      const span = button.querySelector('span');
-      if (span) span.textContent = label;
-      else button.textContent = label;
-    };
-
-    // Hook into Kit's native submit flow.
-    // Kit dispatches custom events on the form during its submission lifecycle.
-    form.addEventListener('submit', () => {
-      setButton('Sending');
-      setMsg('');
-    });
-
-    // Kit fires a "success" event when the subscription is confirmed.
-    // We also watch for Kit injecting its default success message into the form
-    // and swap in our own branded confirmation.
-    const observer = new MutationObserver(() => {
-      const kitSuccess = form.querySelector('.formkit-alert-success, [data-element="success"]');
-      if (kitSuccess && !form.classList.contains('is-success')) {
-        form.classList.add('is-success');
-        setButton('Success');
-        setMsg('Check your inbox to confirm — we\'ll be in touch soon.');
-        form.querySelectorAll('input').forEach((i) => { i.disabled = true; });
-        // Hide Kit's default success alert since we show our own
-        kitSuccess.style.display = 'none';
-      }
-      const kitError = form.querySelector('.formkit-alert-error');
-      if (kitError && kitError.textContent.trim()) {
-        form.classList.add('is-error');
-        setButton('Default');
-        setMsg(kitError.textContent.trim() || 'Something went quiet. Please try again.', true);
-        kitError.style.display = 'none';
-        setTimeout(() => form.classList.remove('is-error'), 500);
-      }
-    });
-    observer.observe(form, { childList: true, subtree: true });
-  });
 </script>
 
 </body>
