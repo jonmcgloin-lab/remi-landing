@@ -1417,7 +1417,7 @@
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
 
   // ---------- Kit waitlist integration ----------
-  const KIT_FORM_ID = '9341109';
+  const KIT_FORM_ID = '9341089';
   const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
 
   document.querySelectorAll('form[data-kit-form]').forEach((form) => {
@@ -1451,7 +1451,16 @@
       form.classList.remove('is-error');
       setMsg('');
 
-      const formData = new FormData(form);
+      // Build submission with only fields Kit accepts by default.
+      // First name is captured in UI but not sent until custom field is configured in Kit.
+      const formData = new FormData();
+      const emailInput = form.querySelector('input[name="email_address"]');
+      const nameInput = form.querySelector('input[name="fields[first_name]"]');
+      formData.append('email_address', emailInput.value);
+      if (nameInput && nameInput.value) {
+        formData.append('fields[first_name]', nameInput.value);
+      }
+
       button.disabled = true;
       setButton('Sending');
 
