@@ -1,650 +1,1485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RÉMI — Gifting, handled.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --cream: #FAF7F2;
-            --warm-white: #FDF9F5;
-            --terracotta: #C4714A;
-            --deep-brown: #1C1410;
-            --gold: #B8965A;
-            --sand: #E8DDD0;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Remi — the AI gifting concierge. Curated gifts, no address required, delivered to 200+ countries." />
+<title>Remi — The Art of Gifting, Delivered.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --cream-warm: #F4EFE6;
+    --cream-deep: #ECE4D5;
+    --terracotta: #C4714A;
+    --terracotta-deep: #A8593A;
+    --terracotta-soft: #D89B7E;
+    --brown: #1C1410;
+    --brown-soft: #3D2E25;
+    --gold: #B8965A;
+    --gold-deep: #957340;
+    --ink: #1C1410;
+    --ink-mute: rgba(28, 20, 16, 0.62);
+    --ink-faint: rgba(28, 20, 16, 0.4);
+    --hairline: rgba(28, 20, 16, 0.12);
+    --hairline-strong: rgba(28, 20, 16, 0.22);
+  }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--cream);
-            color: var(--deep-brown);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  html { scroll-behavior: smooth; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
 
-        /* Header */
-        .header {
-            padding: 2rem 0;
-            position: relative;
-            z-index: 100;
-        }
+  /* ---------- Typography ---------- */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .italic { font-style: italic; font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 500;
+    color: var(--ink-mute);
+  }
+  .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--terracotta);
+    font-weight: 400;
+  }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  /* ---------- Layout helpers ---------- */
+  .wrap {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .hairline { height: 1px; background: var(--hairline); width: 100%; }
 
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--deep-brown);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
+  /* ---------- Navbar ---------- */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(250, 247, 242, 0.78);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px clamp(20px, 4vw, 56px);
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--brown);
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .logo-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    display: inline-block;
+    transform: translateY(-2px);
+  }
+  .nav-links {
+    display: flex;
+    gap: 42px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.3s ease;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--terracotta);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--brown);
+    text-decoration: none;
+    padding: 10px 22px;
+    border: 1px solid var(--brown);
+    border-radius: 999px;
+    transition: all 0.3s ease;
+  }
+  .nav-cta:hover { background: var(--brown); color: var(--cream); }
+  .menu-toggle { display: none; background: none; border: none; cursor: pointer; }
 
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 140px 0 80px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 30%, rgba(196, 113, 74, 0.08), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 20% 80%, rgba(184, 150, 90, 0.06), transparent 60%);
+    pointer-events: none;
+  }
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-        .nav-links a {
-            color: var(--deep-brown);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
 
-        .nav-links a:hover {
-            color: var(--terracotta);
-        }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--terracotta);
+  }
 
-        /* Hero Section */
-        .hero {
-            padding: 4rem 0 6rem;
-            text-align: center;
-            position: relative;
-        }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7.4vw, 104px);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    color: var(--brown);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 1s 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .hero h1 .accent {
+    font-style: italic;
+    color: var(--terracotta);
+    font-weight: 400;
+  }
+  .hero h1 .gold {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 400;
+  }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, var(--terracotta)20, transparent 60%);
-            opacity: 0.1;
-            z-index: -1;
-        }
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+    max-width: 480px;
+    margin-bottom: 44px;
+    opacity: 0;
+    animation: fadeUp 1s 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
 
-        .hero-subtitle {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--terracotta);
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
+  .waitlist {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: var(--cream);
+    border: 1px solid var(--brown);
+    border-radius: 999px;
+    padding: 6px;
+    max-width: 540px;
+    transition: box-shadow 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+    opacity: 0;
+    animation: fadeUp 1s 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    position: relative;
+  }
+  .waitlist:focus-within {
+    box-shadow: 0 12px 40px -12px rgba(28, 20, 16, 0.25);
+    transform: translateY(-1px);
+  }
+  .waitlist.is-error {
+    border-color: var(--terracotta-deep);
+    animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+  .waitlist input {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--brown);
+    outline: none;
+    min-width: 0;
+  }
+  .waitlist input::placeholder { color: var(--ink-faint); }
+  .waitlist .field-name { max-width: 38%; }
+  .waitlist .field-divider {
+    width: 1px;
+    background: var(--hairline);
+    align-self: center;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .waitlist button {
+    background: var(--brown);
+    color: var(--cream);
+    border: none;
+    padding: 0 28px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    cursor: pointer;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    white-space: nowrap;
+  }
+  .waitlist button:hover { background: var(--terracotta); }
+  .waitlist button:disabled { opacity: 0.6; cursor: not-allowed; background: var(--brown); }
+  .waitlist.is-success { border-color: var(--gold); background: var(--cream-warm); }
+  .waitlist.is-success button { background: var(--gold-deep); }
 
-        .hero-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            font-weight: 400;
-            line-height: 0.9;
-            margin-bottom: 2rem;
-            color: var(--deep-brown);
-        }
+  .waitlist-msg {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    max-width: 540px;
+    min-height: 18px;
+    letter-spacing: 0.01em;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .waitlist-msg.show { opacity: 1; transform: translateY(0); }
+  .waitlist-msg.is-error { color: var(--terracotta-deep); }
 
-        .hero-title .accent {
-            color: var(--terracotta);
-            font-style: italic;
-        }
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
 
-        .hero-description {
-            font-size: 1.3rem;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-            color: var(--deep-brown);
-            opacity: 0.8;
-            line-height: 1.5;
-        }
+  .hero-meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.03em;
+  }
+  .hero-meta-item svg { flex-shrink: 0; }
 
-        .cta-form {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+  /* Hero compass */
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 560px;
+    margin-left: auto;
+    opacity: 0;
+    animation: fadeIn 1.4s 0.6s ease forwards;
+  }
 
-        .email-input {
-            flex: 1;
-            min-width: 300px;
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--sand);
-            border-radius: 60px;
-            font-size: 1rem;
-            background: var(--warm-white);
-            color: var(--deep-brown);
-            transition: all 0.3s ease;
-        }
+  .compass {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .compass-rings {
+    position: absolute;
+    inset: 0;
+    animation: rotate 80s linear infinite;
+  }
+  .compass-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--hairline-strong);
+  }
+  .ring-1 { inset: 0; }
+  .ring-2 { inset: 8%; border-color: var(--hairline); }
+  .ring-3 { inset: 16%; border: 1px dashed var(--hairline-strong); }
+  .ring-4 { inset: 26%; border-color: var(--hairline); }
 
-        .email-input:focus {
-            outline: none;
-            border-color: var(--terracotta);
-            background: white;
-        }
+  .compass-occasions {
+    position: absolute;
+    inset: 0;
+    animation: rotate 60s linear infinite;
+  }
+  .occasion-tick {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--brown-soft);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .occasion-tick::before {
+    content: '✦';
+    color: var(--gold);
+    margin-right: 8px;
+    font-style: normal;
+  }
 
-        .cta-button {
-            padding: 1rem 2.5rem;
-            background: var(--terracotta);
-            color: white;
-            border: none;
-            border-radius: 60px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+  .compass-center {
+    position: relative;
+    z-index: 5;
+    width: 38%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, var(--terracotta-soft), var(--terracotta) 50%, var(--terracotta-deep));
+    box-shadow:
+      0 30px 80px -20px rgba(196, 113, 74, 0.5),
+      inset 0 -10px 40px rgba(28, 20, 16, 0.2),
+      inset 0 10px 30px rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+  }
+  .compass-center-inner {
+    transform: scale(1);
+    animation: pulseScale 4s ease-in-out infinite;
+  }
+  .compass-center .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-family: 'DM Sans', sans-serif;
+    opacity: 0.85;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .compass-center .symbol {
+    font-size: clamp(40px, 6vw, 64px);
+    font-style: italic;
+    line-height: 1;
+    display: block;
+  }
 
-        .cta-button:hover {
-            background: var(--deep-brown);
-            transform: translateY(-2px);
-        }
+  .compass-dots {
+    position: absolute;
+    inset: 0;
+  }
+  .compass-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    box-shadow: 0 0 12px rgba(184, 150, 90, 0.6);
+  }
 
-        /* Features Section */
-        .features {
-            padding: 6rem 0;
-            background: var(--warm-white);
-        }
+  .float-card {
+    position: absolute;
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 20px 50px -15px rgba(28, 20, 16, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 6;
+    backdrop-filter: blur(10px);
+  }
+  .float-card-1 {
+    top: 8%;
+    right: -6%;
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-card-2 {
+    bottom: 14%;
+    left: -8%;
+    animation: float 6s ease-in-out infinite 2s;
+  }
+  .float-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--cream-warm);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--terracotta);
+    flex-shrink: 0;
+  }
+  .float-text { font-size: 12px; line-height: 1.3; }
+  .float-text strong { display: block; color: var(--brown); font-weight: 500; }
+  .float-text span { color: var(--ink-mute); font-size: 11px; }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
+  /* ---------- HOW IT WORKS ---------- */
+  .how {
+    padding: 140px 0;
+    background: var(--cream-warm);
+    position: relative;
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 100px;
+  }
+  .section-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(42px, 5.8vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--brown);
+    margin-top: 20px;
+  }
+  .section-head h2 em {
+    color: var(--terracotta);
+    font-weight: 400;
+  }
+  .section-head p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-mute);
+    max-width: 460px;
+  }
 
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 500;
-            color: var(--deep-brown);
-            margin-bottom: 1rem;
-        }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .step {
+    padding: 36px 32px 36px 0;
+    border-left: 1px solid var(--hairline-strong);
+    padding-left: 32px;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .step:first-child { padding-left: 0; border-left: none; }
+  .step:hover { transform: translateY(-6px); }
+  .step:hover .step-num { color: var(--terracotta); }
+  .step:hover .step-icon { transform: scale(1.08) rotate(-3deg); }
 
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--deep-brown);
-            opacity: 0.7;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 64px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.4s ease;
+    font-weight: 400;
+  }
+  .step-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid var(--hairline-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    color: var(--brown);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.15;
+    color: var(--brown);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .step p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
+  /* ---------- OCCASIONS ---------- */
+  .occasions {
+    padding: 140px 0;
+    background: var(--cream);
+  }
+  .occasions-head {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .occasions-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(42px, 5.8vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--brown);
+    margin: 24px 0 22px;
+  }
+  .occasions-head h2 em { color: var(--terracotta); font-weight: 400; }
+  .occasions-head p {
+    font-size: 16px;
+    color: var(--ink-mute);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
 
-        .feature-card {
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-        }
+  .occasion-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    grid-auto-rows: minmax(180px, auto);
+  }
+  .occ {
+    border-radius: 18px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+  }
+  .occ:hover { transform: translateY(-4px); }
+  .occ:hover .occ-arrow { transform: translate(4px, -4px); }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 2rem;
-            background: var(--sand);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
+  .occ h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .occ p {
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.75;
+    max-width: 240px;
+  }
+  .occ-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  .occ-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    opacity: 0.7;
+  }
+  .occ-arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity: 0.7;
+  }
 
-        .feature-icon::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            background: var(--terracotta);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.2;
-        }
+  /* Occasion variants */
+  .occ-1 { grid-column: span 5; background: var(--brown); color: var(--cream); }
+  .occ-1 h4 em { color: var(--terracotta-soft); font-weight: 400; }
+  .occ-2 { grid-column: span 4; background: var(--terracotta); color: var(--cream); }
+  .occ-3 { grid-column: span 3; background: var(--cream-deep); color: var(--brown); }
+  .occ-4 { grid-column: span 4; background: var(--cream-warm); color: var(--brown); border: 1px solid var(--hairline); }
+  .occ-5 { grid-column: span 4; background: var(--gold); color: var(--brown); }
+  .occ-5 h4 em { color: var(--brown-soft); font-weight: 400; font-style: italic; }
+  .occ-6 { grid-column: span 4; background: var(--cream-deep); color: var(--brown); border: 1px solid var(--hairline); }
 
-        .feature-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--deep-brown);
-            margin-bottom: 1rem;
-        }
+  /* Subtle decoration on occasion cards */
+  .occ-deco {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    opacity: 0.07;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .occ-deco-1 { top: -20px; right: -10px; font-size: 200px; }
+  .occ-deco-2 { bottom: -40px; right: -20px; font-size: 180px; }
 
-        .feature-description {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--deep-brown);
-            opacity: 0.8;
-        }
+  /* ---------- GLOBAL REACH ---------- */
+  .reach {
+    padding: 140px 0;
+    background: var(--brown);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .reach::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(196, 113, 74, 0.15), transparent 60%);
+    pointer-events: none;
+  }
+  .reach-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .reach .eyebrow { color: rgba(250, 247, 242, 0.55); }
+  .reach h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(42px, 5.8vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 24px 0 28px;
+  }
+  .reach h2 em { color: var(--terracotta-soft); font-weight: 400; }
+  .reach h2 .gold { color: var(--gold); font-style: italic; font-weight: 400; }
+  .reach > .wrap > .reach-grid > div > p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(250, 247, 242, 0.7);
+    max-width: 460px;
+    margin-bottom: 40px;
+  }
 
-        /* How It Works */
-        .how-it-works {
-            padding: 6rem 0;
-            background: var(--cream);
-        }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    border-top: 1px solid rgba(250, 247, 242, 0.15);
+    padding-top: 40px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(38px, 4.5vw, 56px);
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .stat-num em { color: var(--gold); font-weight: 400; }
+  .stat-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(250, 247, 242, 0.55);
+  }
 
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
+  /* Globe map */
+  .globe {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 560px;
+    margin-left: auto;
+  }
+  .globe svg { width: 100%; height: 100%; }
 
-        .step {
-            position: relative;
-            padding: 2rem;
-            text-align: center;
-        }
+  /* ---------- BOTTOM CTA ---------- */
+  .cta {
+    padding: 160px 0;
+    background: var(--cream);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-deco {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--terracotta);
+    opacity: 0.06;
+    font-size: clamp(200px, 30vw, 480px);
+    line-height: 0.8;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    user-select: none;
+  }
+  .cta-content { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; }
+  .cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--brown);
+    margin: 28px 0 28px;
+  }
+  .cta h2 em { color: var(--terracotta); font-weight: 400; }
+  .cta p {
+    font-size: 17px;
+    color: var(--ink-mute);
+    max-width: 480px;
+    margin: 0 auto 44px;
+    line-height: 1.65;
+  }
+  .cta .waitlist { margin: 0 auto; }
 
-        .step-number {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            background: var(--terracotta);
-            color: white;
-            border-radius: 50%;
-            font-weight: 600;
-            font-size: 1.2rem;
-            line-height: 50px;
-            margin-bottom: 1.5rem;
-        }
+  .cta-sig {
+    margin-top: 60px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-mute);
+  }
+  .cta-sig::before, .cta-sig::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--hairline-strong);
+  }
 
-        .step-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--deep-brown);
-            margin-bottom: 1rem;
-        }
+  /* ---------- FOOTER ---------- */
+  footer {
+    padding: 60px 0 40px;
+    background: var(--cream);
+    border-top: 1px solid var(--hairline);
+  }
+  .foot-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .foot-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .foot-links a {
+    color: var(--ink-mute);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s ease;
+  }
+  .foot-links a:hover { color: var(--terracotta); }
+  .foot-meta {
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
 
-        .step-description {
-            font-size: 1rem;
-            color: var(--deep-brown);
-            opacity: 0.8;
-        }
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulseScale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes pingDot {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
 
-        /* Social Proof */
-        .social-proof {
-            padding: 4rem 0;
-            background: var(--sand);
-            text-align: center;
-        }
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reveal-stagger.in > * { opacity: 1; transform: translateY(0); }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0s; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 0.12s; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 0.24s; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 0.36s; }
+  .reveal-stagger.in > *:nth-child(5) { transition-delay: 0.48s; }
+  .reveal-stagger.in > *:nth-child(6) { transition-delay: 0.6s; }
 
-        .proof-stats {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal, .reveal-stagger > * { opacity: 1; transform: none; }
+  }
 
-        .stat {
-            text-align: center;
-        }
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 60px; }
+    .hero-visual { margin: 0 auto; max-width: 440px; }
+    .section-head { grid-template-columns: 1fr; gap: 24px; }
+    .steps { grid-template-columns: repeat(2, 1fr); gap: 0 24px; }
+    .step:nth-child(3) { padding-left: 0; border-left: none; }
+    .step:nth-child(odd) { padding-left: 0; border-left: none; }
+    .step:nth-child(even) { padding-left: 32px; border-left: 1px solid var(--hairline-strong); }
+    .reach-grid { grid-template-columns: 1fr; gap: 60px; }
+    .globe { margin: 0 auto; max-width: 460px; }
+    .occ-1, .occ-2, .occ-3, .occ-4, .occ-5, .occ-6 { grid-column: span 6; }
+  }
 
-        .stat-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            color: var(--terracotta);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--deep-brown);
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-
-        /* Footer CTA */
-        .footer-cta {
-            padding: 6rem 0;
-            background: var(--deep-brown);
-            color: var(--cream);
-            text-align: center;
-        }
-
-        .footer-cta .section-title {
-            color: var(--cream);
-        }
-
-        .footer-cta .section-subtitle {
-            color: var(--cream);
-            opacity: 0.8;
-        }
-
-        .footer-cta .cta-button {
-            background: var(--terracotta);
-            margin-top: 2rem;
-        }
-
-        .footer-cta .cta-button:hover {
-            background: var(--gold);
-        }
-
-        /* Footer */
-        .footer {
-            padding: 3rem 0;
-            background: var(--deep-brown);
-            color: var(--cream);
-            text-align: center;
-            opacity: 0.6;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-title,
-        .hero-description,
-        .cta-form {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .hero-description {
-            animation-delay: 0.2s;
-        }
-
-        .cta-form {
-            animation-delay: 0.4s;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                padding: 2rem 0 4rem;
-            }
-
-            .cta-form {
-                flex-direction: column;
-            }
-
-            .email-input {
-                min-width: 100%;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .proof-stats {
-                gap: 2rem;
-            }
-        }
-    </style>
+  @media (max-width: 720px) {
+    nav .nav-links, nav .nav-cta { display: none; }
+    .menu-toggle { display: flex; align-items: center; justify-content: center; padding: 8px; color: var(--brown); }
+    .hero { padding: 120px 0 60px; }
+    .hero-meta { flex-wrap: wrap; gap: 16px 24px; }
+    .waitlist { flex-direction: column; border-radius: 22px; padding: 8px; gap: 4px; }
+    .waitlist input { padding: 12px 18px; text-align: center; }
+    .waitlist .field-name { max-width: 100%; }
+    .waitlist .field-divider { display: none; }
+    .waitlist button { padding: 14px 24px; border-radius: 16px; margin-top: 4px; }
+    .float-card-1 { right: 0; top: 0; }
+    .float-card-2 { left: 0; bottom: 0; }
+    .occ-1, .occ-2, .occ-3, .occ-4, .occ-5, .occ-6 { grid-column: span 12; }
+    .steps { grid-template-columns: 1fr; }
+    .step:nth-child(n) { padding-left: 0; border-left: none; padding-top: 32px; padding-bottom: 32px; border-top: 1px solid var(--hairline-strong); }
+    .step:first-child { border-top: none; padding-top: 0; }
+    .stats { grid-template-columns: 1fr; gap: 28px; }
+    .how, .occasions, .reach, .cta { padding: 90px 0; }
+    .foot-links { gap: 20px; flex-wrap: wrap; }
+  }
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="#" class="logo">RÉMI</a>
-                <ul class="nav-links">
-                    <li><a href="#how">How it works</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <p class="hero-subtitle">Personal gifting platform</p>
-            <h1 class="hero-title">
-                The people you love,<br>
-                <span class="accent">rémembered.</span>
-            </h1>
-            <p class="hero-description">
-                RÉMI knows who you love, when it matters, and handles everything else. 
-                Perfect gifts, delivered seamlessly, without the endless browsing.
-            </p>
-            
-            <form class="cta-form">
-                <input 
-                    type="email" 
-                    class="email-input" 
-                    placeholder="Enter your email for early access"
-                    required
-                >
-                <button type="submit" class="cta-button">Join Waitlist</button>
-            </form>
-        </div>
-    </section>
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">remi<span class="logo-dot"></span></a>
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#occasions">Occasions</a></li>
+      <li><a href="#reach">Global reach</a></li>
+      <li><a href="#join">Journal</a></li>
+    </ul>
+    <a href="#join" class="nav-cta">Join waitlist</a>
+    <button class="menu-toggle" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/>
+      </svg>
+    </button>
+  </div>
+</nav>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Gifting, solved</h2>
-                <p class="section-subtitle">
-                    No more guessing addresses, browsing endless catalogs, or missing important moments.
-                </p>
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="eyebrow">Launching from Dubai · Worldwide</span>
+        </div>
+        <h1>
+          The art of<br>
+          <span class="accent">gifting,</span> <span class="gold">delivered.</span>
+        </h1>
+        <p class="hero-sub">
+          Remi is the AI gifting concierge that finds the perfect present for anyone, anywhere — without ever asking for an address. Curated. Considered. Carried across 200+ countries.
+        </p>
+
+        <form class="waitlist" id="join" data-kit-form novalidate>
+          <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
+          <span class="field-divider" aria-hidden="true"></span>
+          <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
+          <button type="submit" data-label-default="Request invite" data-label-sending="Sending…" data-label-success="✓  On the list">Request invite</button>
+        </form>
+        <div class="waitlist-msg" aria-live="polite"></div>
+
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            No address needed
+          </div>
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+            </svg>
+            Same-day to 2–3 days
+          </div>
+          <div class="hero-meta-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>
+            </svg>
+            200+ countries
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual: Occasion compass -->
+      <div class="hero-visual">
+        <div class="compass">
+          <div class="compass-rings">
+            <div class="compass-ring ring-1"></div>
+            <div class="compass-ring ring-2"></div>
+            <div class="compass-ring ring-3"></div>
+            <div class="compass-ring ring-4"></div>
+          </div>
+
+          <div class="compass-dots" id="compassDots"></div>
+
+          <div class="compass-occasions" id="compassOccasions"></div>
+
+          <div class="compass-center">
+            <div class="compass-center-inner">
+              <span class="label">Remi finds</span>
+              <span class="symbol">it.</span>
             </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">AI-Matched Gifts</h3>
-                    <p class="feature-description">
-                        Tell us about them, we'll find the perfect gift. 
-                        Swipe through curated options, never browse catalogs again.
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">📍</div>
-                    <h3 class="feature-title">Address Problem Solved</h3>
-                    <p class="feature-description">
-                        Don't know their address? No problem. 
-                        We handle delivery details without spoiling the surprise.
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Perfect Timing</h3>
-                    <p class="feature-description">
-                        Same-day delivery in Dubai, 2-3 days internationally. 
-                        We only show gifts we can deliver on time.
-                    </p>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">How RÉMI works</h2>
-                <p class="section-subtitle">
-                    Three taps, and you're done. We handle the rest.
-                </p>
-            </div>
-
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Tell us about them</h3>
-                    <p class="step-description">
-                        Quick bubbles: relationship, age, interests, occasion, budget.
-                    </p>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Swipe & select</h3>
-                    <p class="step-description">
-                        AI returns 5-8 perfect matches. Swipe, tap, done.
-                    </p>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">We handle everything</h3>
-                    <p class="step-description">
-                        Address capture, ordering, tracking, delivery—all invisible to you.
-                    </p>
-                </div>
-            </div>
+        <div class="float-card float-card-1">
+          <div class="float-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+            </svg>
+          </div>
+          <div class="float-text">
+            <strong>"Find a 60th birthday gift"</strong>
+            <span>3 curated options · 30s</span>
+          </div>
         </div>
-    </section>
 
-    <!-- Social Proof -->
-    <section class="social-proof">
-        <div class="container">
-            <h2 class="section-title">Launching in Dubai</h2>
-            <p class="section-subtitle">
-                For expats and professionals who send gifts locally and internationally
-            </p>
-            
-            <div class="proof-stats">
-                <div class="stat">
-                    <span class="stat-number">200+</span>
-                    <div class="stat-label">Countries covered</div>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">2hr</span>
-                    <div class="stat-label">Same-day delivery (Dubai)</div>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">10k+</span>
-                    <div class="stat-label">Gift options</div>
-                </div>
-            </div>
+        <div class="float-card float-card-2">
+          <div class="float-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+          </div>
+          <div class="float-text">
+            <strong>Delivered to Tokyo</strong>
+            <span>No address shared</span>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <!-- Footer CTA -->
-    <section class="footer-cta" id="contact">
-        <div class="container">
-            <h2 class="section-title">Ready to never forget again?</h2>
-            <p class="section-subtitle">
-                Join the waitlist for early access to RÉMI. Dubai launch coming soon.
-            </p>
-            <button class="cta-button">Get Early Access</button>
+<!-- ============ HOW IT WORKS ============ -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">— The process</span>
+        <h2>Four quiet steps,<br>one <em>unforgettable</em> gift.</h2>
+      </div>
+      <p>
+        Behind every gift is a small symphony of intention, intelligence, and care. Remi orchestrates each note — so you don't have to.
+      </p>
+    </div>
+
+    <div class="steps reveal-stagger">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/>
+          </svg>
         </div>
-    </section>
+        <h3>Tell us about them</h3>
+        <p>A name, a relationship, an occasion. The smallest details — their love of slow mornings, their last trip — sharpen the search.</p>
+      </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 RÉMI. Dubai, UAE. Gifting, handled.</p>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M12 2l2.5 6.5L21 10l-5 4.5L17.5 21 12 17.5 6.5 21 8 14.5 3 10l6.5-1.5L12 2z"/>
+          </svg>
         </div>
-    </footer>
+        <h3>Our AI listens</h3>
+        <p>Our agents synthesise taste, context, and culture — then propose three considered gifts within seconds, never overwhelming.</p>
+      </div>
 
-    <script>
-        // Form handling
-        document.querySelector('.cta-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            
-            // Replace with actual form handling
-            alert('Thanks for joining! We\'ll be in touch soon.');
-            this.querySelector('input[type="email"]').value = '';
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M20 12V8H6a2 2 0 010-4h12v4M4 6v12c0 1.1.9 2 2 2h14v-4M18 12a2 2 0 100 4 2 2 0 000-4z"/>
+          </svg>
+        </div>
+        <h3>You choose, we wrap</h3>
+        <p>Approve with a tap. We handle wrapping, hand-written notes, and bespoke packaging in our signature cream and terracotta.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M9 22V12h6v10"/>
+          </svg>
+        </div>
+        <h3>It arrives, unannounced</h3>
+        <p>We message your recipient directly to collect their address — discreetly, securely. The gift arrives. The story is theirs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OCCASIONS ============ -->
+<section class="occasions" id="occasions">
+  <div class="wrap">
+    <div class="occasions-head reveal">
+      <span class="eyebrow">— For every chapter</span>
+      <h2>A gift for the<br><em>moments that matter.</em></h2>
+      <p>From the milestones you've planned for years to the kindnesses you remember at the last minute — Remi rises to every occasion.</p>
+    </div>
+
+    <div class="occasion-grid reveal-stagger">
+      <div class="occ occ-1">
+        <span class="occ-deco occ-deco-1">♥</span>
+        <div>
+          <h4>Birthdays<br><em>worth remembering.</em></h4>
+          <p>From a first toy to a fortieth bottle of wine — gifts that mark a life, not a calendar.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 01</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="occ occ-2">
+        <span class="occ-deco occ-deco-2">∞</span>
+        <div>
+          <h4>Anniversaries</h4>
+          <p>Decades, dates, and the quiet years between.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 02</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="occ occ-3">
+        <div>
+          <h4>Weddings</h4>
+          <p>Heirlooms in waiting.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 03</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="occ occ-4">
+        <div>
+          <h4>Newborns &<br>new beginnings</h4>
+          <p>Soft things, kept things — for the smallest hands and the proudest parents.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 04</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="occ occ-5">
+        <div>
+          <h4>Corporate &<br><em>client thank-yous</em></h4>
+          <p>The handshake that lasts long after the meeting ends.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 05</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="occ occ-6">
+        <div>
+          <h4>Just because.</h4>
+          <p>Because Tuesdays deserve love too. Because they crossed your mind. Because.</p>
+        </div>
+        <div class="occ-meta">
+          <span class="occ-tag">No. 06</span>
+          <div class="occ-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GLOBAL REACH ============ -->
+<section class="reach" id="reach">
+  <div class="wrap">
+    <div class="reach-grid">
+      <div class="reveal">
+        <span class="eyebrow">— Without borders</span>
+        <h2>From <em>Dubai</em>,<br>to wherever <span class="gold">they are.</span></h2>
+        <p>Whether they're three streets away or three time zones over, Remi delivers across 200+ countries. Same-day in major cities. Two-to-three days, almost everywhere else.</p>
+
+        <div class="stats">
+          <div>
+            <div class="stat-num"><em>200</em>+</div>
+            <div class="stat-label">Countries</div>
+          </div>
+          <div>
+            <div class="stat-num"><em>24</em>h</div>
+            <div class="stat-label">Same-day in cities</div>
+          </div>
+          <div>
+            <div class="stat-num"><em>0</em></div>
+            <div class="stat-label">Addresses asked</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Globe / dot map -->
+      <div class="globe reveal">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="gradGlobe" cx="40%" cy="40%">
+              <stop offset="0%" stop-color="#3D2E25"/>
+              <stop offset="100%" stop-color="#1C1410"/>
+            </radialGradient>
+            <radialGradient id="gradGlow" cx="50%" cy="50%">
+              <stop offset="0%" stop-color="#C4714A" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#C4714A" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Glow halo -->
+          <circle cx="250" cy="250" r="240" fill="url(#gradGlow)"/>
+
+          <!-- Globe sphere -->
+          <circle cx="250" cy="250" r="200" fill="url(#gradGlobe)" stroke="rgba(184,150,90,0.3)" stroke-width="1"/>
+
+          <!-- Latitude lines -->
+          <g stroke="rgba(184,150,90,0.18)" stroke-width="0.5" fill="none">
+            <ellipse cx="250" cy="250" rx="200" ry="40"/>
+            <ellipse cx="250" cy="250" rx="200" ry="80"/>
+            <ellipse cx="250" cy="250" rx="200" ry="120"/>
+            <ellipse cx="250" cy="250" rx="200" ry="160"/>
+            <ellipse cx="250" cy="250" rx="200" ry="195"/>
+          </g>
+
+          <!-- Longitude lines -->
+          <g stroke="rgba(184,150,90,0.18)" stroke-width="0.5" fill="none">
+            <ellipse cx="250" cy="250" rx="40" ry="200"/>
+            <ellipse cx="250" cy="250" rx="80" ry="200"/>
+            <ellipse cx="250" cy="250" rx="120" ry="200"/>
+            <ellipse cx="250" cy="250" rx="160" ry="200"/>
+          </g>
+
+          <!-- Continent dot pattern (decorative, suggestive) -->
+          <g fill="rgba(250,247,242,0.55)">
+            <!-- Africa / Middle East cluster -->
+            <circle cx="270" cy="220" r="1.5"/><circle cx="278" cy="226" r="1.5"/><circle cx="265" cy="232" r="1.5"/>
+            <circle cx="272" cy="240" r="1.5"/><circle cx="285" cy="245" r="1.5"/><circle cx="262" cy="250" r="1.5"/>
+            <circle cx="278" cy="258" r="1.5"/><circle cx="290" cy="265" r="1.5"/><circle cx="270" cy="270" r="1.5"/>
+            <circle cx="285" cy="280" r="1.5"/><circle cx="276" cy="290" r="1.5"/><circle cx="282" cy="305" r="1.5"/>
+            <!-- Europe -->
+            <circle cx="245" cy="180" r="1.5"/><circle cx="258" cy="185" r="1.5"/><circle cx="240" cy="195" r="1.5"/>
+            <circle cx="252" cy="200" r="1.5"/><circle cx="265" cy="205" r="1.5"/>
+            <!-- Asia -->
+            <circle cx="305" cy="200" r="1.5"/><circle cx="320" cy="208" r="1.5"/><circle cx="335" cy="215" r="1.5"/>
+            <circle cx="350" cy="225" r="1.5"/><circle cx="315" cy="225" r="1.5"/><circle cx="330" cy="235" r="1.5"/>
+            <circle cx="345" cy="240" r="1.5"/><circle cx="360" cy="248" r="1.5"/><circle cx="325" cy="250" r="1.5"/>
+            <!-- Americas -->
+            <circle cx="170" cy="195" r="1.5"/><circle cx="155" cy="205" r="1.5"/><circle cx="180" cy="215" r="1.5"/>
+            <circle cx="165" cy="225" r="1.5"/><circle cx="178" cy="240" r="1.5"/><circle cx="172" cy="255" r="1.5"/>
+            <circle cx="185" cy="265" r="1.5"/><circle cx="190" cy="280" r="1.5"/><circle cx="180" cy="295" r="1.5"/>
+            <circle cx="195" cy="310" r="1.5"/><circle cx="188" cy="325" r="1.5"/>
+            <!-- Australia -->
+            <circle cx="370" cy="320" r="1.5"/><circle cx="385" cy="328" r="1.5"/><circle cx="375" cy="335" r="1.5"/>
+            <circle cx="390" cy="338" r="1.5"/>
+          </g>
+
+          <!-- Origin: Dubai -->
+          <g>
+            <circle cx="293" cy="250" r="6" fill="#C4714A">
+              <animate attributeName="r" values="6;14;6" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="293" cy="250" r="4" fill="#FAF7F2"/>
+            <text x="300" y="246" font-family="Cormorant Garamond" font-style="italic" font-size="14" fill="#FAF7F2">Dubai</text>
+          </g>
+
+          <!-- Active destination dots (gold, glowing) -->
+          <g fill="#B8965A">
+            <circle cx="170" cy="220" r="3.5"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="345" cy="215" r="3.5"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></circle>
+            <circle cx="245" cy="180" r="3.5"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" begin="1s" repeatCount="indefinite"/></circle>
+            <circle cx="375" cy="335" r="3.5"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" begin="1.5s" repeatCount="indefinite"/></circle>
+            <circle cx="190" cy="295" r="3.5"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" begin="2s" repeatCount="indefinite"/></circle>
+          </g>
+
+          <!-- Connection arcs from Dubai -->
+          <g stroke="#B8965A" stroke-width="0.8" fill="none" opacity="0.6" stroke-dasharray="2,3">
+            <path d="M 293 250 Q 230 130 170 220">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4s" repeatCount="indefinite"/>
+            </path>
+            <path d="M 293 250 Q 320 130 345 215">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4s" begin="1s" repeatCount="indefinite"/>
+            </path>
+            <path d="M 293 250 Q 270 100 245 180">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4s" begin="2s" repeatCount="indefinite"/>
+            </path>
+            <path d="M 293 250 Q 360 290 375 335">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4s" begin="3s" repeatCount="indefinite"/>
+            </path>
+            <path d="M 293 250 Q 230 290 190 295">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="4s" begin="2.5s" repeatCount="indefinite"/>
+            </path>
+          </g>
+
+          <!-- Outer ring -->
+          <circle cx="250" cy="250" r="220" fill="none" stroke="rgba(184,150,90,0.2)" stroke-width="0.5" stroke-dasharray="2,4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOTTOM CTA ============ -->
+<section class="cta">
+  <span class="cta-deco">R</span>
+  <div class="wrap">
+    <div class="cta-content reveal">
+      <span class="eyebrow">— Be among the first</span>
+      <h2>Some gifts wait<br>for the <em>right hands.</em></h2>
+      <p>Remi launches soon. Join the founding waitlist for early access, a complimentary first gift, and a quiet thank-you from us.</p>
+
+      <form class="waitlist" data-kit-form novalidate>
+        <input type="text" name="fields[first_name]" class="field-name" placeholder="First name" required aria-label="First name" autocomplete="given-name" />
+        <span class="field-divider" aria-hidden="true"></span>
+        <input type="email" name="email_address" placeholder="your@email.com" required aria-label="Email address" autocomplete="email" />
+        <button type="submit" data-label-default="Reserve my place" data-label-sending="Sending…" data-label-success="✓  Welcome">Reserve my place</button>
+      </form>
+      <div class="waitlist-msg" aria-live="polite"></div>
+
+      <div class="cta-sig">remi · made in dubai · delivered everywhere</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot-inner">
+    <div class="logo" style="font-size: 22px;">remi<span class="logo-dot"></span></div>
+    <ul class="foot-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="mailto:hello@remigft.com">hello@remigft.com</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+    <div class="foot-meta">© 2026 Remi · remigft.com</div>
+  </div>
+</footer>
+
+<script>
+  // Build the rotating compass occasions
+  (function() {
+    const occasions = [
+      'Birthdays', 'Weddings', 'Anniversaries', 'New Beginnings',
+      'Thank You', 'Just Because', 'Milestones', 'Apologies',
+      'Holidays', 'Welcome Home', 'Promotions', 'New Babies'
+    ];
+    const wrap = document.getElementById('compassOccasions');
+    const dotsWrap = document.getElementById('compassDots');
+    if (!wrap || !dotsWrap) return;
+
+    const radius = 44; // % from center
+    occasions.forEach((label, i) => {
+      const angle = (360 / occasions.length) * i;
+      const tick = document.createElement('span');
+      tick.className = 'occasion-tick';
+      tick.textContent = label;
+      tick.style.transform = `rotate(${angle}deg) translate(${radius}%) rotate(${-angle}deg)`;
+      wrap.appendChild(tick);
+
+      const dot = document.createElement('span');
+      dot.className = 'compass-dot';
+      const dotAngle = angle + 15;
+      dot.style.transform = `rotate(${dotAngle}deg) translate(40%) translate(-50%, -50%)`;
+      dotsWrap.appendChild(dot);
+    });
+  })();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+  // ---------- Kit waitlist integration ----------
+  const KIT_FORM_ID = '9341109';
+  const KIT_ENDPOINT = `https://app.kit.com/forms/${KIT_FORM_ID}/subscriptions`;
+
+  document.querySelectorAll('form[data-kit-form]').forEach((form) => {
+    const button = form.querySelector('button[type="submit"]');
+    const msg = form.nextElementSibling && form.nextElementSibling.classList.contains('waitlist-msg')
+      ? form.nextElementSibling : null;
+
+    const setMsg = (text, isError = false) => {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.classList.toggle('is-error', isError);
+      msg.classList.toggle('show', !!text);
+    };
+
+    const setButton = (labelKey) => {
+      const label = button.dataset[`label${labelKey}`];
+      if (label) button.textContent = label;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (form.classList.contains('is-success')) return;
+
+      // Basic native validation
+      if (!form.checkValidity()) {
+        form.classList.add('is-error');
+        setMsg('A first name and valid email, please.', true);
+        setTimeout(() => form.classList.remove('is-error'), 500);
+        return;
+      }
+      form.classList.remove('is-error');
+      setMsg('');
+
+      const formData = new FormData(form);
+      button.disabled = true;
+      setButton('Sending');
+
+      try {
+        const res = await fetch(KIT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
         });
 
-        // Second CTA button
-        document.querySelector('.footer-cta .cta-button').addEventListener('click', function() {
-            document.querySelector('.email-input').focus();
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        });
+        if (res.ok) {
+          form.classList.add('is-success');
+          setButton('Success');
+          setMsg('Check your inbox to confirm — we\'ll be in touch soon.');
+          form.querySelectorAll('input').forEach((i) => { i.disabled = true; });
+        } else {
+          throw new Error(`Kit responded ${res.status}`);
+        }
+      } catch (err) {
+        button.disabled = false;
+        setButton('Default');
+        form.classList.add('is-error');
+        setMsg('Something went quiet. Please try again.', true);
+        setTimeout(() => form.classList.remove('is-error'), 500);
+      }
+    });
+  });
+</script>
 
-        // Smooth scrolling for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document.querySelectorAll('.feature-card, .step, .stat').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
 </body>
 </html>
